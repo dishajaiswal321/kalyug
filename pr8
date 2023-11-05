@@ -1,0 +1,23 @@
+practical no:7
+
+
+You can create the "job_history" table with the specified columns and enforce constraints on the "employee_id" column to prevent duplicate values and on the "job_id" column to ensure it contains only values that exist in the "jobs" table. Here's the SQL statement to create the "job_history" table:
+
+create table jobs(
+    job_id int primary key,
+   job_rollno int
+   );
+
+CREATE TABLE job_history1(
+    employee_id INT primary key,
+    start_date DATE,
+    end_date DATE,
+    job_id int,
+    department_id INT,
+FOREIGN KEY (job_id) REFERENCES jobs(job_id)
+    );
+In this SQL statement:
+
+The "employee_id" column is part of the primary key, which ensures that each employee can have only one job history entry for a specific start date, preventing duplicate values.
+The "job_id" column is defined as a foreign key referencing the "jobs" table, which means it will only allow values that exist in the "jobs" table's "job_id" column.
+Make sure you have the "jobs" table already created with the appropriate structure (columns: job_id, job_title, min_sal, max_sal) for the foreign key constraint to work correctly.
