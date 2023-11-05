@@ -1,0 +1,38 @@
+practical no. 1
+
+CREATE TABLE employee(
+    -> emp_id INT PRIMARY KEY,
+    -> emp_name VARCHAR(255),
+    -> salary DECIMAL(10,2),
+    -> Date_Of_Joining DATE,
+    -> Dept_no INT,
+    -> Designation VARCHAR(50));
+
+INSERT INTO employee(emp_id,emp_name,salary,Date_Of_Joining,Dept_no,Designation)
+    -> VALUES(1,'Harshada Aher',50000,'2003-01-31',101,'Manager');
+INSERT INTO employee(emp_id,emp_name,salary,Date_Of_Joining,Dept_no,Designation)
+    -> VALUES(2,'Sakshi Deore',50000,'2003-02-15',102, 'Developer');
+INSERT INTO employee(emp_id,emp_name,salary,Date_Of_Joining,Dept_no,Designation)
+    -> VALUES(3,'Harsh Karwande',40000,'2003-03-15',103,'Manager');
+INSERT INTO employee(emp_id,emp_name,salary,Date_Of_Joining,Dept_no,Designation)
+    -> VALUES(4,'Abhinav Kame',50,'2004-11-26',104,'peon');
+INSERT INTO employee(emp_id,emp_name,salary,Date_Of_Joining,Dept_no,Designation)
+    -> VALUES(5,'Nupoor Kale', 60000,'2005-02-05',105,'Developer');
+
+SELECT * FROM employee;
+
+CREATE VIEW emp_vl AS
+    -> SELECT emp_id,emp_name,Dept_no
+    -> FROM employee;
+
+UPDATE emp_vl
+    -> SET Dept_no = 109
+    -> WHERE emp_id = 1;
+
+SELECT * from employee;
+
+SHOW INDEXES FROM employee;
+
+CREATE INDEX salary_index ON employee (salary);
+
+SHOW INDEXES FROM employee;
