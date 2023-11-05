@@ -1,0 +1,50 @@
+practical no. 2
+
+ALTER TABLE employee ADD COLUMN city VARCHAR(50);
+
+SELECT * FROM employee;
+
+UPDATE employee
+    -> SET city='Mumbai'
+    -> WHERE emp_id=1;
+UPDATE employee
+    -> SET city='Aurangabad'
+    -> WHERE emp_id=2;
+UPDATE employee
+    -> SET city='Pune'
+    -> WHERE emp_id=3;
+UPDATE employee
+    -> SET city='Nashik'
+    -> WHERE emp_id=4;
+UPDATE employee
+    -> SET city='Solapur'
+    -> WHERE emp_id=5;
+
+SELECT * from employee;
+
+UPDATE employee
+    -> SET emp_name='Vidya Das'
+    -> WHERE emp_id = 2;
+
+SELECT * FROM employee
+    ->  WHERE emp_name LIKE '%e%';
+
+SELECT DISTINCT Designation
+    -> FROM employee;
+
+SELECT emp_name, salary
+    -> FROM employee
+    -> WHERE city = 'Mumbai';
+
+SELECT emp_name, Designation
+    -> FROM employee
+    -> WHERE Designation IN ('Manager', 'peon');
+
+SELECT Designation
+    -> FROM employee
+    -> GROUP BY Designation
+    -> HAVING COUNT(emp_id) > 1;
+
+ALTER TABLE employee RENAME TO emp1;
+
+SELECT * FROM emp1;
