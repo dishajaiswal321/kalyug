@@ -1,0 +1,47 @@
+18) Implement Stored Procedure namely proc_Grade for the categorization of student. If marks
+scored by students in examination is <=1500 and marks>=990 then student will be placed in
+distinction category if marks scored are between 989 and900 category is first class, if marks 899
+and 825 category is Higher Second Class. Write a PL/SQL block for using procedure created
+with above requirement. Stud_Marks(name, total_marks) Result(Roll,Name, Class).
+1)-- Create a table to store the student marks
+CREATE TABLE Stud_Marks (
+ Roll NUMBER PRIMARY KEY,
+ Name VARCHAR2(50),
+ Total_Marks NUMBER
+);
+2)-- Create a table to store the results
+CREATE TABLE Result (
+ Roll NUMBER PRIMARY KEY,
+ Name VARCHAR2(50),
+ Class VARCHAR2(50)
+);
+3)-- Create the stored procedure proc_Grade
+CREATE OR REPLACE PROCEDURE proc_Grade AS
+BEGIN
+ FOR student IN (SELECT Roll, Name, Total_Marks FROM Stud_Marks) LOOP
+ IF student.Total_Marks >= 990 AND student.Total_Marks <= 1500 THEN
+ INSERT INTO Result (Roll, Name, Class) VALUES (student.Roll, student.Name,
+'Distinction');
+ ELSIF student.Total_Marks >= 900 AND student.Total_Marks <= 989 THEN
+ INSERT INTO Result (Roll, Name, Class) VALUES (student.Roll, student.Name, 'First
+Class');
+ ELSIF student.Total_Marks >= 825 AND student.Total_Marks <= 899 THEN
+ INSERT INTO Result (Roll, Name, Class) VALUES (student.Roll, student.Name,
+'Higher Second Class');
+ END IF;
+ END LOOP;
+ COMMIT;
+END;
+/
+4)-- Insert sample data into the Stud_Marks table
+INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (1, 'John', 1450);
+INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (2, 'Alice', 990);
+INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (3, 'Bob', 899);
+INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (4, 'Eve', 1000);
+INSERT INTO Stud_Marks (Roll, Name, Total_Marks) VALUES (5, 'Charlie', 850);
+5)-- Execute the stored procedure to categorize the students
+BEGIN
+proc_Grade;
+END;
+/
+SELECT * FROM Result;
