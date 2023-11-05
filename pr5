@@ -1,0 +1,44 @@
+practical no. 5
+
+CREATE TABLE Borrower (
+    ->     RollNo INT PRIMARY KEY,
+    ->     Name VARCHAR(50),
+    ->     DateofIssue DATE,
+    ->     NameofBook VARCHAR(100),
+    ->     Status VARCHAR(10)
+    -> );
+
+
+CREATE TABLE Fine (
+    ->     Roll_no INT PRIMARY KEY,
+    ->     Date DATE,
+    ->     Amt DECIMAL(10, 2)
+    -> );
+
+
+INSERT INTO Borrower(RollNo,Name,DateofIssue,NameofBook,Status)
+    -> VALUES(301,'Harshada','2003-10-20','Wings of Fire','Issued');
+INSERT INTO Borrower(RollNo,Name,DateofIssue,NameofBook,Status)
+    -> VALUES(302,'Sakshi','2003-11-20','My Fault','Available');
+INSERT INTO Borrower(RollNo,Name,DateofIssue,NameofBook,Status)
+    -> VALUES(303,'Sayali','2003-11-05','TOC','Issued');
+
+SELECT * from Borrower;
+
+INSERT INTO Fine(Roll_no,Date,Amt)
+    -> VALUES(301,'2004-03-10',500);
+INSERT INTO Fine(Roll_no,Date,Amt)
+    -> VALUES(302,'2004-05-10',1000);
+
+UPDATE Borrower
+    -> SET DateofIssue = '2003-10-20'
+    -> WHERE RollNo = 302;
+
+SELECT * from Fine;
+
+SELECT COUNT(*) AS Issued_Books_Count
+    -> FROM Borrower
+    -> WHERE Status = 'Issued';
+
+SELECT * FROM Borrower;
+SELECT * FROM Fine;
