@@ -21,7 +21,7 @@ CREATE TABLE customer (
 );
 
 -- Create the 'order' table
-CREATE TABLE order (
+CREATE TABLE orders (
     order_id INT PRIMARY KEY,
     date DATE,
     amount DECIMAL(10, 2),
@@ -45,7 +45,7 @@ This will create a sequence named order_id_sequence that starts at 1 and increme
 d. To truncate a table, you can use the TRUNCATE statement. For example, if you want to truncate the Order table:
 
 
-TRUNCATE TABLE Order1;
+TRUNCATE TABLE Orders;
 This will remove all rows from the Order table while keeping the table structure intact.
 
 e. To find the list of customers who placed orders and the details of their orders, you can use a SQL query with a JOIN:
@@ -53,7 +53,7 @@ e. To find the list of customers who placed orders and the details of their orde
 
 SELECT c.c_id, c.c_name, o.order_id, o.dates, o.amount
 FROM Customer c
-INNER JOIN Order1 o ON c.c_id = o.cust_id;
+INNER JOIN Orders o ON c.c_id = o.cust_id;
 This query will retrieve the customer ID, customer name, order ID, order date, and order amount for customers who have placed orders.
 
 f. To find customer information and append order details to a table, you can use the INSERT INTO ... SELECT statement. Assuming you want to append the order details to a new table:
@@ -62,7 +62,7 @@ f. To find customer information and append order details to a table, you can use
 CREATE TABLE CustomerOrderInfo AS
 SELECT c.c_id, c.c_name, o.order_id, o.dates, o.amount
 FROM Customer1 c
-INNER JOIN Order1 o ON c.c_id = o.cust_id;
+INNER JOIN Orders o ON c.c_id = o.cust_id;
 This code will create a new table named CustomerOrderInfo and populate it with the customer information and order details.
 
 g. To list down customers who haven't placed an order, you can use a SQL query like this:
@@ -70,6 +70,6 @@ g. To list down customers who haven't placed an order, you can use a SQL query l
 
 SELECT c.c_id, c.c_name
 FROM Customer1 c
-LEFT JOIN Order1 o ON c.c_id = o.cust_id
+LEFT JOIN Orders o ON c.c_id = o.cust_id
 WHERE o.cust_id IS NULL;
 This query uses a LEFT JOIN to retrieve customers who do not have corresponding orders (where o.cust_id is NULL), indicating that they haven't placed an order.
