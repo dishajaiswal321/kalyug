@@ -1,0 +1,69 @@
+practcal no:4
+
+
+Create both tables with primary key and foreign key constraints:
+
+CREATE TABLE Customer (
+    c_id INT PRIMARY KEY,
+    c_name VARCHAR(255),
+    email VARCHAR(255),
+    city VARCHAR(255),
+    pincode VARCHAR(10)
+);
+
+CREATE TABLE Order2(
+    order_id INT PRIMARY KEY,
+    amount DECIMAL(10, 2),
+    cust_id INT,
+    FOREIGN KEY (cust_id) REFERENCES Customer(c_id)
+);
+Insert 10 records into each table:
+
+-- Inserting 10 records into the Customer table
+INSERT INTO Customer (c_id, c_name, email, city, pincode)
+VALUES
+    (1, 'John Doe', 'john@example.com', 'New York', '10001'),
+    (2, 'Jane Smith', 'jane@example.com', 'Los Angeles', '90001'),
+    -- Add more records as needed.
+
+-- Inserting 10 records into the Order table
+INSERT INTO Order2(order_id, amount, cust_id)
+VALUES
+    (1, 100.00, 1),
+    (2,  75.50, 2),
+    -- Add more records as needed.
+Find all orders placed by customers with cust_id 2:
+
+SELECT * FROM Order2 WHERE cust_id = 2;
+Find the list of customers who placed their orders and details of their orders:
+
+SELECT c.c_name, o.order_id, o.amount
+FROM Customer c
+INNER JOIN Order2 o ON c.c_id = o.cust_id;
+List of customers who haven't placed an order:
+
+SELECT c.c_name
+FROM Customer c
+LEFT JOIN Order2 o ON c.c_id = o.cust_id
+WHERE o.cust_id IS NULL;
+List all orders and append them to the customer table:
+You can't directly append the orders to the Customer table because they are separate entities. However, you can retrieve a list of all customers and their orders in a single query as shown in task 4.
+
+Display all records:
+To display all records from both tables, you can run two separate queries:
+
+
+-- Display all records from the Customer table
+SELECT * FROM Customer;
+
+-- Display all records from the Order table
+SELECT * FROM Order;
+Display customers that are from the same city:
+To display customers from the same city, you can use a self-join on the Customer table. For example, to find customers from the same city as customer 2 (Jane Smith):
+
+
+SELECT c2.c_name
+FROM Customer c1
+INNER JOIN Customer c2 ON c1.city = c2.city
+WHERE c1.c_id = 2;
+This query will return a list of customers who are from the same city as Jane Smith. Adjust the c1.c_id value to check for other customers.
