@@ -1,0 +1,87 @@
+practical no:8
+
+CREATE TABLE employee (
+    ->     employee_name VARCHAR(50) PRIMARY KEY,
+    ->     street VARCHAR(100),
+    ->     city VARCHAR(50)
+    -> );
+
+
+CREATE TABLE works (
+    ->     employee_name VARCHAR(50) PRIMARY KEY,
+    ->     company_name VARCHAR(50),
+    ->     salary DECIMAL(10, 2),
+    ->     FOREIGN KEY (employee_name) REFERENCES employee(employee_name)
+    -> );
+
+ CREATE TABLE company (
+    ->     company_name VARCHAR(50) PRIMARY KEY,
+    ->     city VARCHAR(50)
+    -> );
+
+CREATE TABLE manages (
+    ->     employee_name VARCHAR(50) PRIMARY KEY,
+    ->     manager_name VARCHAR(50)
+    -> );
+
+
+mysql> INSERT INTO employee (employee_name, street, city)
+    -> VALUES
+    ->     ('John Doe', '123 Main St', 'New York'),
+    ->     ('Jane Smith', '456 Elm St', 'New York'),
+    ->     ('Alice Johnson', '789 Oak St', 'San Francisco'),
+    ->     ('Bob Wilson', '101 Pine St', 'San Francisco'),
+    ->     ('Charlie Brown', '555 Maple St', 'Los Angeles');
+
+ INSERT INTO works (employee_name, company_name, salary)
+    -> VALUES
+    ->     ('John Doe', 'CompanyA', 12000.00),
+    ->     ('Jane Smith', 'CompanyA', 13000.00),
+    ->     ('Alice Johnson', 'CompanyB', 11000.00),
+    ->     ('Bob Wilson', 'CompanyB', 10500.00),
+    ->     ('Charlie Brown', 'CompanyC', 11500.00);
+
+ INSERT INTO company (company_name, city)
+    -> VALUES
+    ->     ('CompanyA', 'New York'),
+    ->     ('CompanyB', 'San Francisco'),
+    ->     ('CompanyC', 'Los Angeles');
+
+INSERT INTO manages (employee_name, manager_name)
+    -> VALUES
+    ->     ('John Doe', 'Manager1'),
+    ->     ('Alice Johnson', 'Manager2'),
+    ->     ('Charlie Brown', 'Manager3');
+
+SELECT e.employee_name, e.street, e.city
+    -> FROM employee e
+    -> INNER JOIN works w ON e.employee_name = w.employee_name
+    -> WHERE w.company_name IN (
+    ->     SELECT w1.company_name
+    ->     FROM works w1
+    ->     WHERE w1.salary > 10000
+    ->     GROUP BY w1.company_name
+    ->     HAVING COUNT(*) > 1
+    -> ) AND w.salary > 10000;
+
+
+select e.employee_name
+    -> from employee e
+    -> where e.city in(select distinct w1.company_name
+    -> from works w1
+    -> where w1.employee_name = e.employee_name);
+
+SELECT e.employee_name
+    -> FROM employee e
+    -> WHERE w.salary > (
+    ->     SELECT AVG(w1.salary)
+    ->     FROM works w1
+    ->     WHERE w1.company_name = (
+    ->         SELECT company_name
+    ->         FROM works w2
+    ->         WHERE w2.employee_name = e.employee_name
+    ->     )
+    -> );
+
+
+
