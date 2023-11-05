@@ -1,0 +1,21 @@
+25) Implement aggregation and indexing with suitable example in mongodb.
+db.createCollection("sales")
+db.sales.insertMany([
+ { product: "A", category: "Electronics", amount: 100 },
+ { product: "B", category: "Books", amount: 50 },
+ { product: "C", category: "Electronics", amount: 75 },
+ { product: "D", category: "Books", amount: 40 },
+ { product: "E", category: "Clothing", amount: 120 },
+]);
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$sum:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$avg:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$min:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$max:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$first:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$last:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",totalSales:{$push:"$amount"}}}]) ;
+db.sales.aggregate([{$group:{_id:"$category",count:{$sum:1}}}]) ;
+db.sales.createIndex({ product: 1 });
+db.sales.createIndex({ amount: -1 });
+db.sales.getIndexes();
+db.sales.dropIndex({amount:-1});
