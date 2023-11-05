@@ -42,3 +42,15 @@ SELECT COUNT(*) AS Issued_Books_Count
 
 SELECT * FROM Borrower;
 SELECT * FROM Fine;
+
+5)
+```sql
+SELECT b1.RollNo
+FROM Borrower b1
+INNER JOIN (
+ SELECT DateofIssue
+ FROM Borrower
+ GROUP BY DateofIssue
+ HAVING COUNT(*) > 1
+) b2 ON b1.DateofIssue = b2.DateofIssue;
+```
