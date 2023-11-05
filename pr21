@@ -1,0 +1,60 @@
+21) Implement a PL/SQL block of code using explicit Cursor, that will merge the data available
+in the newly created table N_RollCall with the data available in the table O_RollCall. If the data
+in the first table already exist in the second table then that data should be skipped.
+-- Create N_RollCall table
+CREATE TABLE N_RollCall (
+ rollcall_id NUMBER PRIMARY KEY,
+ rollcall_date DATE,
+ student_id NUMBER,
+ status VARCHAR2(20)
+);
+-- Create O_RollCall table
+CREATE TABLE O_RollCall (
+ rollcall_id NUMBER PRIMARY KEY,
+ rollcall_date DATE,
+ student_id NUMBER,
+ status VARCHAR2(20)
+);
+INSERT INTO N_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES (1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 'Present');
+1 row created.
+INSERT INTO N_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES (2, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 102, 'Absent');
+1 row created.
+INSERT INTO O_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES (3, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 103, 'Present');
+1 row created.
+INSERT INTO O_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES (4, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 104, 'Absent');
+INSERT INTO O_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES (1, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 101, 'Present');
+1 row created.
+INSERT INTO O_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES (2, TO_DATE('2023-11-01', 'YYYY-MM-DD'), 102, 'Absent');
+DECLARE
+ CURSOR O_rollcall_cursor IS
+ SELECT *
+ FROM O_RollCall;
+
+ O_rollcall_rec O_RollCall%ROWTYPE;
+ existing_count NUMBER;
+
+ BEGIN
+ FOR O_rollcall_rec IN O_rollcall_cursor LOOP
+ -- Check if the data already exists in O_RollCall
+ -- If not, insert it into O_RollCall
+ SELECT COUNT(*)
+ INTO existing_count
+ FROM N_RollCall
+ WHERE rollcall_id = O_rollcall_rec.rollcall_id;
+IF existing_count = 0 THEN
+ INSERT INTO N_RollCall (rollcall_id, rollcall_date, student_id, status)
+VALUES(O_rollcall_rec.rollcall_id,O_rollcall_rec.rollcall_date,
+O_rollcall_rec.student_id, O_rollcall_rec.status);
+ END IF;
+END LOOP;
+ COMMIT;
+ END;
+ /
+select * O_RollCall;
+select * N_RollCall;
