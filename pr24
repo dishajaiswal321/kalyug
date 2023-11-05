@@ -1,60 +1,79 @@
-a. To create emp_id as the primary key and add indices on the employee table, you can use SQL commands like this:
 
-
--- Create the 'employee' table
+-- Create the employee table and insert 5 records
 CREATE TABLE employee (
     emp_id INT PRIMARY KEY,
-    e_name VARCHAR(255),
+    e_name VARCHAR(50),
     salary DECIMAL(10, 2),
     Date_of_Joining DATE,
     Dept_no INT,
-    Designation VARCHAR(255)
+    Designation VARCHAR(50)
 );
 
--- Create the 'customer' table
-CREATE TABLE customer (
+-- Insert 5 records into the employee table
+INSERT INTO employee (emp_id, e_name, salary, Date_of_Joining, Dept_no, Designation)
+VALUES
+    (1, 'John Doe', 60000.00, '2023-01-01', 101, 'Manager'),
+    (2, 'Jane Smith', 55000.00, '2023-02-15', 102, 'Supervisor'),
+    (3, 'Alice Johnson', 52000.00, '2023-03-20', 101, 'Engineer'),
+    (4, 'Bob Wilson', 58000.00, '2023-04-10', 103, 'Analyst'),
+    (5, 'Charlie Brown', 62000.00, '2023-05-05', 102, 'Supervisor');
+
+-- Create the Customer table and insert 5 records
+CREATE TABLE Customer (
     c_id INT PRIMARY KEY,
-    c_name VARCHAR(255),
-    email VARCHAR(255),
-    city VARCHAR(255),
+    c_name VARCHAR(50),
+    email VARCHAR(100),
+    city VARCHAR(50),
     pincode VARCHAR(10)
 );
 
--- Create the 'order' table
-CREATE TABLE orders (
+-- Insert 5 records into the Customer table
+INSERT INTO Customer (c_id, c_name, email, city, pincode)
+VALUES
+    (1, 'Customer A', 'customera@example.com', 'New York', '10001'),
+    (2, 'Customer B', 'customerb@example.com', 'Los Angeles', '90001'),
+    (3, 'Customer C', 'customerc@example.com', 'San Francisco', '94101'),
+    (4, 'Customer D', 'customerd@example.com', 'Chicago', '60601'),
+    (5, 'Customer E', 'customere@example.com', 'New York', '10002');
+
+-- Create the Order table and insert 5 records
+CREATE TABLE Order (
     order_id INT PRIMARY KEY,
     date DATE,
     amount DECIMAL(10, 2),
     cust_id INT,
-    FOREIGN KEY (cust_id) REFERENCES customer(c_id)
+    FOREIGN KEY (cust_id) REFERENCES Customer(c_id)
 );
 
-
-CREATE INDEX idx_salary ON employee1(salary);
-CREATE INDEX idx_Dept_no ON employee1(Dept_no);
-This code creates the employee table with emp_id as the primary key and adds indices on the salary and Dept_no columns.
-
-b. To create a user-defined index on any column, you can use the CREATE INDEX statement as shown in the previous answer. You can create an index on any column you like by replacing idx_column_name and column_name with your desired index name and column name.
-
-c. To create a sequence using auto-increment, you can use an SQL command like this (syntax may vary depending on the database system you are using):
-
-
-CREATE SEQUENCE order_id_sequence START WITH 1 INCREMENT BY 1;
-This will create a sequence named order_id_sequence that starts at 1 and increments by 1 each time it is used. You can use this sequence to generate auto-incrementing values for a column, such as order_id in the Order table.
-
-d. To truncate a table, you can use the TRUNCATE statement. For example, if you want to truncate the Order table:
+-- Insert 5 records into the Order table
+INSERT INTO Order (order_id, date, amount, cust_id)
+VALUES
+    (1, '2023-01-15', 500.00, 1),
+    (2, '2023-02-10', 750.00, 2),
+    (3, '2023-03-20', 600.00, 1),
+    (4, '2023-04-05', 900.00, 3),
+    (5, '2023-05-02', 800.00, 4);
 
 
-TRUNCATE TABLE Orders;
-This will remove all rows from the Order table while keeping the table structure intact.
-
-e. To find the list of customers who placed orders and the details of their orders, you can use a SQL query with a JOIN:
+a. To create emp_id as the primary key and add indices on the employee table, you can use SQL commands like this:
 
 
-SELECT c.c_id, c.c_name, o.order_id, o.dates, o.amount
-FROM Customer c
-INNER JOIN Orders o ON c.c_id = o.cust_id;
-This query will retrieve the customer ID, customer name, order ID, order date, and order amount for customers who have placed orders.
+ALTER TABLE employee
+ADD CONSTRAINT pk_employee PRIMARY KEY (emp_id);
+
+b. 
+-- Create an index on the salary column (example index)
+CREATE INDEX idx_salary ON employee(salary);
+
+c. -- Create a sequence for generating emp_id values
+CREATE SEQUENCE emp_id_sequence START WITH 6 INCREMENT BY 1;
+
+
+d. TRUNCATE TABLE employee;
+
+e. SELECT C.c_name, O.order_id, O.date, O.amount
+FROM Customer C
+JOIN Order O ON C.c_id = O.cust_id;
 
 f. To find customer information and append order details to a table, you can use the INSERT INTO ... SELECT statement. Assuming you want to append the order details to a new table:
 
@@ -65,11 +84,6 @@ FROM Customer1 c
 INNER JOIN Orders o ON c.c_id = o.cust_id;
 This code will create a new table named CustomerOrderInfo and populate it with the customer information and order details.
 
-g. To list down customers who haven't placed an order, you can use a SQL query like this:
-
-
-SELECT c.c_id, c.c_name
-FROM Customer1 c
-LEFT JOIN Orders o ON c.c_id = o.cust_id
-WHERE o.cust_id IS NULL;
-This query uses a LEFT JOIN to retrieve customers who do not have corresponding orders (where o.cust_id is NULL), indicating that they haven't placed an order.
+g. SELECT c_name, email, city, pincode
+FROM Customer
+WHERE c_id NOT IN (SELECT DISTINCT cust_id FROM Order);
