@@ -45,3 +45,54 @@ proc_Grade;
 END;
 /
 SELECT * FROM Result;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+PROCEDURE CODE 
+
+create or replace procedure marksproc as
+marks student_marks.total_marks%type;
+stud_name student_marks.name%type:=&name;
+
+BEGIN
+select total_marks into marks from student_marks where stud_name=name;
+
+IF marks<=1500 AND marks>=990
+THEN
+dbms_output.put_line('Category Destinction');
+
+ELSIF marks<989 AND marks>900
+THEN
+dbms_output.put_line('Category First Class');
+
+ELSIF marks<=899 AND marks>=825
+THEN
+dbms_output.put_line('Category Higher Second  Class');
+
+ELSE
+dbms_output.put_line('Student is failed');
+
+
+END IF;
+
+end;
+/
+
+
+					OUTPUT
+
+SQL> @result
+Enter value for name: 'Sakshi'
+old   3: stud_name student_marks.name%type:=&name;
+new   3: stud_name student_marks.name%type:='Sakshi';
+
+Procedure created.
+
+SQL> exex marksproc;
+SP2-0734: unknown command beginning "exex marks..." - rest of line ignored.
+SQL> exec marksproc;
+Student is failed
+
+PL/SQL procedure successfully completed.
+
+
